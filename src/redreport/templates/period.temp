@@ -1,0 +1,3 @@
+{% if report == 'week' %}Semaine {{ week.week }} (du {{ begin|dateformat }} au {{ end|dateformat }})
+{% elif report == 'month' %}Mensuel - {{ begin|monthformat }}
+{% else %}Du {{ begin|dateformat }} au {{ end|dateformat }}{% endif %}

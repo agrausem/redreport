@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+"""
+
+import sys
+from optparse import make_option
+
+from adama import sir_yes_sir
+
+global_options = (
+    # options for command come here
+    # use make_option
+    # see http://docs.python.org/library/optparse.html#populating-the-parser
+)
+
+if __name__ == '__main__':
+    sys.exit(sir_yes_sir(module='chronosreport', doc=__doc__, options=global_options, version=''))
