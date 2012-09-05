@@ -23,5 +23,5 @@ except Exception as e:
     print(e)
 else:
     client.enable('auth.Header', header_name='X-Redmine-API-Key',
-        header_value='8c9602ee1f5de0f7ca5a53c6ca07545ec1ab5cc0')
+        header_value=config['general']['api_key'])
     client.enable('format.Json')
