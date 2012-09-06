@@ -1,13 +1,30 @@
+"""
+"""
+
 from redreport import client
 from redreport.util import get_date
 
 
 def count_elements(function):
+    """
+    Count elements returned by a Redmine API Rest URI call
+    
+    :param function: a WS-API function to call 
+    :type function: function
+    :rtype: an integer
+    """
     response = function(format='json', limit='1')
     return int(response.content['total_count'])
 
 
-def get_users(team=None):
+def get_users(*identifiers):
+    """
+    Get users from Redmine
+
+    :param team: ididentifiers of users
+    :type team: list of identifiers or usernames
+    :rtype: a JSON list of Redmine users
+    """
 
     users = []
 
@@ -21,14 +38,14 @@ def get_users(team=None):
         response = client.list_users(format='json', limit=str(call_num * 100),
                    offset=str((call_num - 1) * 100))
 
-        if team:
+        if identifiers:
             users_partial = [user for user in response.content['users']
-                if user['id'] in team]
+                if user['id'] in identifiers or user['login'] in identifiers]
         else:
             users_partial = response.content['users']
         users.extend(users_partial)
         
-        if team and len(users) == len(team):
+        if identifiers and len(users) == len(identifiers):
             break
 
         call_num += 1
@@ -37,14 +54,30 @@ def get_users(team=None):
 
 
 def get_user_by_id(user_id):
+    """ Get a user from his Redmine id
+
+    :param user_id: the Redmine user id
+    :type users_id: an integer
+    :rtype: a JSON formatted Redmine user
+    """
     return client.get_user(format='json', id=str(user_id)).content['user']
 
 
-def get_users_id(team=None):
-    return [user['id'] for user in get_users(team)]
+def get_users_id(*logins):
+    """ Get a list of users Redmine id
+
+    :param logins: Redmine usernames
+    :type logins: strings
+    :rtype: list of Redmine user ids
+    """
+    return [user['id'] for user in get_users(*logins)]
 
 
 def get_project_by_id(project_id):
+    """ Get a Redmine project with his id
+
+    :param project_id: id of Redmine project
+    """
     return client.get_project(format='json',
             id=str(project_id)).content['project']
 
@@ -67,7 +100,7 @@ def get_time_entries(begin, end, team=None):
     """
     time_entries = []
 
-    users_id = get_users_id(team)
+    users_id = get_users_id(*team)
     
     total_time_entries = count_elements(client.list_time_entries)
     limit = total_time_entries / 100

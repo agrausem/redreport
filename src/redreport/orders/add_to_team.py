@@ -30,9 +30,10 @@ class Order(BaseOrder):
         super(Order, self).__init__('redreport', command='redreport')
 
     def execute(self, *args, **options):
+
         team_name = args[0]
         logins = args[1:]
-        users_id = api.get_users_id(logins)
+        users_id = api.get_users_id(*logins)
 
         if team_name in config['teams']:
             team = config['teams'][team_name]

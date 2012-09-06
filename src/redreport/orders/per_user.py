@@ -77,7 +77,7 @@ class Order(BaseOrder):
         
         time_entries = api.get_time_entries(week.day(0), week.day(6), team)
         users = {}
-        for user in api.get_users(team):
+        for user in api.get_users(*team):
             users[user['id']] = user
 
         per_user = {}
