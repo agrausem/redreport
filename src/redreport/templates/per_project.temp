@@ -1,6 +1,6 @@
 # Rapport par groupes de projet #
 ---------------------------------
-{% include 'period.temp' %}
+{% include 'default/period.temp' %}
 {% for parent_project_name, data in per_project_group_items %}
 > {{ parent_project_name }}: {{ data.time }}
   {% for project in data.projects %}

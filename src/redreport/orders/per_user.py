@@ -11,10 +11,10 @@ import isoweek
 import calendar
 from datetime import date
 
-from redreport import api
-from redreport import util
-from redreport import teams
-from redreport import templates_env
+from .. import api
+from .. import util
+from .. import conf
+from ..template import env as template_env
 
 class Order(BaseOrder):
     """ Constructs a per user report """
@@ -68,7 +68,7 @@ class Order(BaseOrder):
 
         if options['team'] is not None:
             try:
-                team = teams[options['team']]
+                team = conf['teams'][options['team']]
             except KeyError:
                 raise OrderError('Team {0} doesn\'t exist'.format(
                     options['team']) , 'per_user')
@@ -87,7 +87,7 @@ class Order(BaseOrder):
             else:
                 per_user[time_entry['user']['id']] += float(time_entry['hours'])
 
-        template = templates_env.get_template('per_user.temp')
+        template = template_env.get_template('default/per_user.temp')
         print template.render(report=report, week=week, begin=begin, end=end,
             per_user_items=per_user.items(), total=sum(per_user.values()),
             users=users)

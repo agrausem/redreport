@@ -9,8 +9,8 @@ from adama.commandment import BaseOrder
 from adama.exceptions import OrderError
 
 
-from redreport import api
-from redreport import teams
+from .. import api
+from .. import conf
 
 class Order(BaseOrder):
     """ List members of a team """
@@ -33,7 +33,7 @@ class Order(BaseOrder):
         # the logic of the order comes here
         team = args[0]
         try:
-            users_id = teams[team]
+            users_id = conf['teams'][team]
         except KeyError:
             raise OrderError(u"Team {0} doesn't exist".format(team), 'list_team')
         else:

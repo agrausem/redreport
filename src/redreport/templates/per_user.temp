@@ -1,6 +1,6 @@
 # Rapport par membre #
 ----------------------
-{% include 'period.temp' %}
+{% include 'default/period.temp' %}
 {% for id, time in per_user_items %}
 - {{ users[id].firstname }} {{ users[id].lastname }}: {{ time }}{% endfor %}
 Total: {{ total }}

@@ -9,8 +9,9 @@ from yaml import dump
 from adama.commandment import BaseOrder
 from adama.exceptions import OrderError
 
-from redreport import config_file, config
-from redreport import api
+from ..util import load_conf_file
+from .. import api
+from .. import conf
 
 class Order(BaseOrder):
     """ Add a user to a team """
@@ -35,14 +36,14 @@ class Order(BaseOrder):
         logins = args[1:]
         users_id = api.get_users_id(*logins)
 
-        if team_name in config['teams']:
-            team = config['teams'][team_name]
+        if team_name in conf['teams']:
+            team = conf['teams'][team_name]
             for user_id in users_id:
                 if user_id not in team:
-                    config['teams'][team_name].append(user_id)
+                    conf['teams'][team_name].append(user_id)
         else:
-            config['teams'][team_name] = users_id
+            conf['teams'][team_name] = users_id
 
-        dump(config, stream=open(config_file, 'w'))
+        dump(conf, stream=load_conf_file(mode='w'))
         
         return 0

@@ -11,10 +11,10 @@ import isoweek
 import calendar
 from datetime import date
 
-from redreport import api
-from redreport import util
-from redreport import teams
-from redreport import templates_env
+from .. import api
+from .. import conf
+from .. import util
+from ..template import env as template_env
 
 class Order(BaseOrder):
     """ Construct a per project and team report """
@@ -67,7 +67,7 @@ class Order(BaseOrder):
 
         if options['team'] is not None:
             try:
-                team = teams[options['team']]
+                team = conf['teams'][options['team']]
             except KeyError:
                 raise OrderError('Team {0} doesn\'t exist'.format(
                     options['team']) , 'per_project')
@@ -97,7 +97,7 @@ class Order(BaseOrder):
                 per_project_group[parent['name']]['time'] += float(project_data['time'])
                 per_project_group[parent['name']]['projects'].append({project_name: project_data['time']})
 
-        template = templates_env.get_template('per_project.temp')
+        template = template_env.get_template('default/per_project.temp')
         print template.render(report=report, week=week, begin=begin, end=end,
             per_project_group_items=per_project_group.items(),
             total=sum(data['time'] for data in per_project_group.values()))
