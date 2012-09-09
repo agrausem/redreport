@@ -21,7 +21,7 @@ class Order(BaseOrder):
 
     options = BaseOrder.options + (
         make_option("-t", "--team", action="store", type="string",
-            dest="team"),
+            dest="team", help="the team name"),
         make_option("-w", "--week", action="store", type="int", dest="week",
             default=isoweek.Week.thisweek().week),
         make_option("-y", "--year", action="store", type="int", dest="year",
@@ -37,7 +37,7 @@ class Order(BaseOrder):
     # this constructs a pretty help for the order
     args = ''
     description = __doc__
-    examples = 'chronos per_user -t dip 29 -b 2012/06/01 -e 2012/06/08'
+    examples = '\nExample: \nredreport per_user -t dip -w 29\n\n'
 
 
     def __init__(self):
@@ -76,16 +76,15 @@ class Order(BaseOrder):
             team = None
         
         time_entries = api.get_time_entries(week.day(0), week.day(6), team)
-        users = {}
-        for user in api.get_users(*team):
-            users[user['id']] = user
+        
+        # make dict from list with id as key 
+        # {3: {'login': 'toto', 'id': 3, ...}}
+        users = dict([(user['id'], user) for user in api.get_users(*team)])
 
-        per_user = {}
+        # initialize dict from the user dict keys (ids) with value 0.0
+        per_user = dict.fromkeys(users.keys(), 0.0)
         for time_entry in time_entries:
-            if time_entry['user']['id'] not in per_user:
-                per_user[time_entry['user']['id']] = float(time_entry['hours'])
-            else:
-                per_user[time_entry['user']['id']] += float(time_entry['hours'])
+            per_user[time_entry['user']['id']] += float(time_entry['hours'])
 
         template = template_env.get_template('default/per_user.temp')
         print template.render(report=report, week=week, begin=begin, end=end,
