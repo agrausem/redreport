@@ -1,0 +1,6 @@
+general: 
+    api_key:  # A redmine API Key
+    spec_source: # url or file
+    spec_uri: # filepath or url
+teams: {}
+plugins: []
