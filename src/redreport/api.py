@@ -107,7 +107,7 @@ def get_time_entries(begin, end, team=None):
     if total_time_entries % 100 != 0:
         limit +=1
     
-    call_num = 1
+    call_num = 0
     while call_num <= limit:
         call_num += 1
 
