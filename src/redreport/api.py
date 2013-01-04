@@ -1,9 +1,11 @@
 """
 """
 
+from redreport import conf
 from redreport import client
 from redreport.util import get_date
 
+BASE_PROJECTS_ID = conf['base_projects'].keys()
 
 def count_elements(function):
     """
@@ -82,12 +84,16 @@ def get_project_by_id(project_id):
             id=str(project_id)).content['project']
 
 
-def get_parent_project(project_id, last=False):
+def get_parent_project(project_id, last=False, base_projects=False):
     """
     """
     project = get_project_by_id(project_id)
     if last:
         while 'parent' in project:
+            project = get_project_by_id(project['parent']['id'])
+        return project
+    elif base_projects:
+        while project['id'] not in BASE_PROJECTS_ID:
             project = get_project_by_id(project['parent']['id'])
         return project
     elif 'parent' in project:
@@ -128,3 +134,26 @@ def get_time_entries(begin, end, team=None):
         time_entries.extend(time_partial)
 
     return time_entries
+
+
+def get_man_days(hours):
+    """
+    Gets the time in days.man
+    :param hours: hours to convert
+    :type hours: float
+    :rtype: 1 rounded float
+    """
+    return round(hours / 7.3, 2)
+
+
+def is_a_special_projects_group(project_id):
+    """
+    """
+    return conf['base_projects'][project_id]['special']
+
+
+def get_special_projects_group(project_id):
+    """
+    """
+    project = conf['base_projects'][project_id]['name']
+    return conf[project]
