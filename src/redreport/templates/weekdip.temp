@@ -1,0 +1,62 @@
+====== Année {{ week.year }} - Semaine {{ week.week }} ({{ begin|dateformat }} au {{ end|dateformat }}) ======
+
+===== Temps global =====
+
+| Temps effectif | 282.8 h | 38.7 j.h |
+| Congés / Fériés | FIXME h | FIXME j.h |
+
+<charter>
+title = Temps effectif de travail / Semaine {{ week.week }}
+size = 1000 x 500
+align = left
+bgcolor = #eeeeee
+type = pie3d
+pieExploded = on
+labelSerie = 2
+palette = many
+
+282.8, 9.5
+Temps effectif, Delta
+</charter>
+
+
+===== Répartition du temps de travail ====
+
+| Projets | 158.25 h | 21.7 j.h |
+| Évolutions des applications | 52.45 h | 7.1 j.h |
+| Exploitation | 5.1 h |  0.7 j.h |
+| Divers | 66.5 h | 9.1 j.h |
+
+===== Répartition du temps consacré aux projets =====
+
+| Projets métiers | 123.25 h | 16.9 j.h |
+| Projets DI | 8.5 h | 1.2 j.h |
+| Projets SDN | 26.5 h | 3.6 j.h |
+
+<charter>
+title = Répartition des activités / Semaine 23
+size = 1000 x 500
+align = left
+bgcolor = #eeeeee
+type = pie3d
+pieExploded = on
+labelSerie = 2
+
+123.25, 8.5, 26.5, 52.45, 5.1, 23.5, 10, 33
+Projets métiers, Projets DI, Projets SDN, Évolutions des applications, Exploitation, Veille technologique, Encadrement, Divers
+</charter>
+
+<charter>
+title = Répartition par applications / Semaine 23
+size = 1000 x 500
+align = left
+bgcolor = #eeeeee
+type = pie3d
+pieExploded = on
+labelSerie = 2
+palette = many
+decimals = 1
+
+35, 33.4, 85.5, 8.5, 36, 1.75, 1, 8.5, 2, 4.5, 0.1
+ENT, Moodle, Alumni 2, Libraires DIP, Lorelaps, Dérec, Pstage, Thèses en ligne, Alisée, Apoweb, Enform
+</charter>
