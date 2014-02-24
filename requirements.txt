@@ -1,7 +1,4 @@
 jinja2
 pyyaml
 isoweek
--e git://github.com/agrausem/spyre.git#egg=spyre
--e git://github.com/agrausem/adama.git#egg=adama
--e git://github.com/franckcuny/http.git#egg=http
--e git://github.com/franckcuny/httpclient.git#egg=httpclient
+britney
