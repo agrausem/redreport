@@ -4,8 +4,26 @@
 from redreport import conf
 from redreport import client
 from redreport.util import get_date
+import re
 
-BASE_PROJECTS_ID = conf['base_projects'].keys()
+BASE_PROJECTS_ID = [] # conf['base_projects'].keys()
+
+
+def get_group(name):
+    """ Get a redmine group with it's members
+
+    :param name: name of the group
+    :type name: can be a partial name or a regex)
+    :rtype: a dict
+    """
+    groups = client.list_groups(format='json').data.get('groups', [])
+    for group in groups:
+        if re.search(name, group['name'], re.I):
+            group = client.get_group(format='json', id=str(group['id']),
+                                     include="users").data
+    return group
+
+
 
 def count_elements(function):
     """
