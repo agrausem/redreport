@@ -79,4 +79,3 @@ class Page(object):
     @property
     def counter(self):
         return self.__counter
-
