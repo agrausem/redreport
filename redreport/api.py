@@ -9,20 +9,39 @@ import re
 BASE_PROJECTS_ID = [] # conf['base_projects'].keys()
 
 
-def get_group(name):
+def get_pagination_for(func, **kwargs):
+    response = func(**kwargs)
+    if response.paginate and response.paginate.needs_pagination:
+        paginate = response.paginate
+        while paginate.counter < paginate.total_count:
+            response_tmp = func(**kwargs.update({'offset': paginate.counter}))
+            response.objects.append(response_tmp.objects)
+            paginate.next()
+
+
+def get_group(id):
+    """ Get a redmine group with his id
+
+    :param id: id of the group to search
+    :rtype: a Group object
+    """
+
+    response = client.get_group(id=str(id), include="users,memberships")
+    return response.object
+
+
+def get_groups_by_name(name):
     """ Get a redmine group with it's members
 
     :param name: name of the group
     :type name: can be a partial name or a regex)
     :rtype: a dict
     """
-    groups = client.list_groups(format='json').data.get('groups', [])
-    for group in groups:
-        if re.search(name, group['name'], re.I):
-            group = client.get_group(format='json', id=str(group['id']),
-                                     include="users").data
-    return group
-
+    response = get_pagination_for(client.list_groups)
+    return [
+        get_group(group.id) for group in response.objects
+        if re.search(name, group.name, re.I)
+    ]
 
 
 def count_elements(function):
